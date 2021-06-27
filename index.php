@@ -191,11 +191,17 @@ define('REGEX_NUMBER',"^[0-9]+$");
         ////////////////////////////////////////////////HACKS////////////////////////////////////////////////////
 
         $hacks = trim(filter_input(INPUT_POST, 'hacks', FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
-
+        if(!empty($hacks)){
+            if(strlen($hacks)<=1 || strlen($hacks)>=500){
+                $error['hacks'] = 'Votre texte doit être compris entre 1 et 300 caracteres';
+            }
+        } else {
+            $error['hacks'] = 'Votre texte n\'est pas renseigné';
+        }
 
         ////////////////////////////////////////////EXPERIENCE////////////////////////////////////////////////////
 
-        $flexRadioDefault = trim(filter_input(INPUT_POST, 'codex', FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
+        $codex = trim(filter_input(INPUT_POST, 'codex', FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -369,7 +375,9 @@ define('REGEX_NUMBER',"^[0-9]+$");
                         <textarea class="mt-3 form-control form-control-lg"
                             name="hacks" id="hacks" rows="3"
                             placeholder="Racontez-nous un de vos hacks (pas forcément technique ou informatique)"
-                            ></textarea>
+                            required>
+                            <?= htmlentities($superHero ?? '', ENT_QUOTES, 'UTF-8')?></textarea>
+                        <?= htmlentities($error['superHero'] ?? '', ENT_QUOTES, 'UTF-8')?>
                     </div>
                     <!-- ///////////////////////////////////////////////EXPERIENCE////////////////////////////////////////////////////////////////// -->
 
